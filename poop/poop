@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ -z $@ ]; 
+then
+	cat $HOME/.bash_history | less
+else
+	grep $@ $HOME/.bash_history
+fi
+exit 0
