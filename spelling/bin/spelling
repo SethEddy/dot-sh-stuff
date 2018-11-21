@@ -33,40 +33,7 @@ do
 	espeak -s 140 -v en+f2 "$word" 
 	while read -r var
 	do
-		if [ $word = games ]; then
-			espeak -s 140 -v en+f2 'you are doing awesome, would you like to play a game now?' &
-			read -r -p 'You are doing awesome, Would you like to play a game now? [y/N] ' response
-			if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
-				espeak -s 140 -v en+f2 'Okey, What game would you like to play?' &
-				echo 'Okey, What game would you like to play?'
-				PS3='Choose a game or exit menu: '
-				options=("Pac-Man" "Invaders" "Moon Buggy" "Exit Games")
-				select opt in "${options[@]}"
-				do
-					case $opt in
-						"Pac-Man")
-							pacman4console
-							break
-							;;
-						"Invaders")
-							ninvaders
-							break
-							;;
-						"Moon Buggy")
-							moon-buggy
-							break
-							;;
-						"Exit Games")
-							break
-							;;
-						*) echo "invalid option $REPLY";;
-					esac
-				done
-			else
-				break
-			fi
-			break
-		elif [ $var = '?' ]; then
+		if [ $var = '?' ]; then
 			espeak -s 120 -v en+f2 "$word" 
 		elif [ $var = help ]; then
 			echo -e "${CYAN}$word${NC}"
@@ -96,40 +63,7 @@ else
 		espeak -s 140 -v en+f2 "$word" 
 		while read -r var
 		do
-			if [ $word = games ]; then
-				espeak -s 140 -v en+f2 'you are doing awesome, would you like to play a game now?' &
-				read -r -p 'You are doing awesome, Would you like to play a game now? [y/N] ' response
-				if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
-					espeak -s 140 -v en+f2 'Okey, What game would you like to play?' &
-					echo 'Okey, What game would you like to play?'
-					PS3='Choose a game or exit menu: '
-					options=("Pac-Man" "Invaders" "Moon Buggy" "Exit Games")
-					select opt in "${options[@]}"
-					do
-						case $opt in
-							"Pac-Man")
-								pacman4console
-								break
-								;;
-							"Invaders")
-								ninvaders
-								break
-								;;
-							"Moon Buggy")
-								moon-buggy
-								break
-								;;
-							"Exit Games")
-								break
-								;;
-							*) echo "invalid option $REPLY";;
-						esac
-					done
-				else
-					break
-				fi
-				break
-			elif [ $var = '?' ]; then
+			if [ $var = '?' ]; then
 				espeak -s 120 -v en+f2 "$word" 
 			elif [ $var = help ]; then
 				echo -e "${CYAN}$word${NC}"
