@@ -1,0 +1,170 @@
+#!/bin/bash
+RED='\033[0;31m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+cat /home/kronos/.config/spelling/art
+if [[ new = "$@" ]]; then
+	read -r -p 'Would you like to write a new spelling test? [y/N] ' response
+	if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
+		mv .config/spelling/list .config/spelling/list-$(date +%m-%d-%y)
+		for ((n=0;n<30;n++))
+		do
+			read addword
+			echo $addword >> .config/spelling/list
+		done
+		
+	else
+		echo 'Okay'
+	fi
+	read -r -p 'Would you like to add a new word to the spelling test? [y/N] ' response
+	if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
+		read addword
+		echo $addword >> .config/spelling/list
+		echo 'Okay, good bye'
+	else
+		echo 'Okay, good bye'
+	fi
+	exit 0
+elif [[ easy = "$@" ]]; then
+list=$(cat .config/spelling/list)
+declare -a words=($list)
+for word in "${words[@]}"
+do
+	espeak -s 140 -v en+f2 "$word" 
+	while read -r var
+	do
+		if [ $word = games ]; then
+			espeak -s 140 -v en+f2 'you are doing awesome, would you like to play a game now?' &
+			read -r -p 'You are doing awesome, Would you like to play a game now? [y/N] ' response
+			if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
+				espeak -s 140 -v en+f2 'Okey, What game would you like to play?' &
+				echo 'Okey, What game would you like to play?'
+				PS3='Choose a game or exit menu: '
+				options=("Pac-Man" "Invaders" "Moon Buggy" "Exit Games")
+				select opt in "${options[@]}"
+				do
+					case $opt in
+						"Pac-Man")
+							pacman4console
+							break
+							;;
+						"Invaders")
+							ninvaders
+							break
+							;;
+						"Moon Buggy")
+							moon-buggy
+							break
+							;;
+						"Exit Games")
+							break
+							;;
+						*) echo "invalid option $REPLY";;
+					esac
+				done
+			else
+				break
+			fi
+			break
+		elif [ $var = '?' ]; then
+			espeak -s 120 -v en+f2 "$word" 
+		elif [ $var = help ]; then
+			echo -e "${CYAN}$word${NC}"
+			espeak -s 120 -v en+f2 "$word"
+		elif [ $var = skip ]; then
+			echo ':('
+			break
+		elif [ $var = Q ]; then
+			echo 'Good Bye'
+			espeak -s 120 -v en+f2 'good bye'
+			exit
+		elif [ $var = "$word" ]; then
+			echo 'GREAT JOB'
+			espeak -s 140 -v en+f2 'great Job'
+			break
+		else
+			echo 'Try Again'
+			espeak -s 140 -v en+f2 'try again'
+		fi
+	done
+done
+else
+	list=$(cat .config/spelling/list)
+	declare -a words=($list)
+	for word in "${words[@]}"
+	do
+		espeak -s 140 -v en+f2 "$word" 
+		while read -r var
+		do
+			if [ $word = games ]; then
+				espeak -s 140 -v en+f2 'you are doing awesome, would you like to play a game now?' &
+				read -r -p 'You are doing awesome, Would you like to play a game now? [y/N] ' response
+				if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
+					espeak -s 140 -v en+f2 'Okey, What game would you like to play?' &
+					echo 'Okey, What game would you like to play?'
+					PS3='Choose a game or exit menu: '
+					options=("Pac-Man" "Invaders" "Moon Buggy" "Exit Games")
+					select opt in "${options[@]}"
+					do
+						case $opt in
+							"Pac-Man")
+								pacman4console
+								break
+								;;
+							"Invaders")
+								ninvaders
+								break
+								;;
+							"Moon Buggy")
+								moon-buggy
+								break
+								;;
+							"Exit Games")
+								break
+								;;
+							*) echo "invalid option $REPLY";;
+						esac
+					done
+				else
+					break
+				fi
+				break
+			elif [ $var = '?' ]; then
+				espeak -s 120 -v en+f2 "$word" 
+			elif [ $var = help ]; then
+				echo -e "${CYAN}$word${NC}"
+				espeak -s 120 -v en+f2 "$word"
+			elif [ $var = skip ]; then
+				echo -e "${RED}ACCESS DENIED${NC}"
+				espeak -s 140 -v en+f2 'access denied'
+				espeak -s 140 -v en+f2 'password required' &
+				read -s -r -p $'password:\n' response
+				if [ "$response" = atari ]; then
+					echo ':('
+					break
+				else
+					echo 'No way!'
+				fi
+			elif [ $var = Q ]; then
+				echo -e "${RED}ACCESS DENIED${NC}"
+				espeak -s 140 -v en+f2 'access denied'
+				espeak -s 140 -v en+f2 'password required' &
+				read -s -r -p $'password:\n' response
+				if [ "$response" = atari ]; then
+					echo 'Good Bye'
+					espeak -s 120 -v en+f2 'good bye'
+					exit
+				else
+					echo 'No way!'
+				fi
+			elif [ $var = "$word" ]; then
+				echo 'GREAT JOB'
+				espeak -s 140 -v en+f2 'great Job'
+				break
+			else
+				echo 'Try Again'
+				espeak -s 140 -v en+f2 'try again'
+			fi
+		done
+	done
+fi
